@@ -1,5 +1,5 @@
 defmodule ElixirLabWeb.ErrorJSONTest do
-  use ElixirLabWeb.ConnCase, async: true
+  use ElixirLabWeb.ConnCase
 
   test "renders 404" do
     assert ElixirLabWeb.ErrorJSON.render("404.json", %{}) == %{errors: %{detail: "Not Found"}}
