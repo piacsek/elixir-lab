@@ -21,7 +21,7 @@ defmodule ElixirLab.DataCase do
   end
 
   setup _tags do
-    pid = Ecto.Adapters.SQL.Sandbox.start_owner!(ElixirLab.Repo)
+    pid = Ecto.Adapters.SQL.Sandbox.start_owner!(ElixirLab.Repo, shared: true)
     on_exit(fn -> Ecto.Adapters.SQL.Sandbox.stop_owner(pid) end)
   end
 
