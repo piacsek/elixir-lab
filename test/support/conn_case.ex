@@ -11,7 +11,7 @@ defmodule ElixirLabWeb.ConnCase do
   using opts do
     quote do
       if unquote(opts)[:async] == false do
-        raise "async: false is not supported by #{ElixirLabWeb.ConnCase}"
+        raise "async: false is not supported by ElixirLabWeb.ConnCase"
       end
 
       @endpoint ElixirLabWeb.Endpoint
