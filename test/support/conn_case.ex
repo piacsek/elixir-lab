@@ -31,8 +31,7 @@ defmodule ElixirLabWeb.ConnCase do
     end
   end
 
-  setup tags do
-    ElixirLab.DataCase.setup_sandbox(tags)
+  setup _tags do
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end
