@@ -7,8 +7,12 @@ defmodule ElixirLab.DataCase do
 
   use ExUnit.CaseTemplate
 
-  using do
+  using opts do
     quote do
+      if unquote(opts)[:async] == false do
+        raise "async: false is not supported by #{ElixirLabWeb.DataCase}"
+      end
+
       use ExUnit.Case, async: true
 
       alias ElixirLab.Repo
