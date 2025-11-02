@@ -1,2 +1,7 @@
 - Add CI
+- Add ability to run a test locally from the UI
+- Save the test run results:
+	- Add DB tables to persist test run results(test_runner, test_execution)
+- Add ability to run a test remotely from the UI in prod
 - Add CD
+- Add Boundary lib
