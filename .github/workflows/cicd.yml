@@ -126,7 +126,7 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: 3.8.1
-      - uses: mhanberg/gigalixir-action
+      - uses: mhanberg/gigalixir-action@latest
         with:
           GIGALIXIR_APP: elixir-lab
           GIGALIXIR_USERNAME: ${{ secrets.GIGALIXIR_USERNAME }}
