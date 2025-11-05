@@ -122,6 +122,7 @@ jobs:
       # - test
       # - static-analysis
     steps:
+      - uses: actions/checkout@v4
       - name: Set up Gigalixir remote
         run: |
           git remote add gigalixir https://$GIGALIXIR_EMAIL:$GIGALIXIR_PASSWORD@git.gigalixir.com/$GIGALIXIR_APP.git
