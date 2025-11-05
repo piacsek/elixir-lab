@@ -5,6 +5,10 @@ on: [push]
 env:
   MIX_ENV: test
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   run_checks_and_deploly:
     name: Run quality checks & Deploy
