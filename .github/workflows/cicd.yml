@@ -25,13 +25,13 @@ jobs:
           key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-mix-lock-${{ hashFiles('mix.lock') }}
       - name: Get & compile deps
         id: get-and-compile-deps
-        if: steps.cached-deps.output.cache-hit != 'true'
+        if: steps.cached-deps.outputs.cache-hit != 'true'
         run: |
           MIX_ENV=${{ env.MIX_ENV }} mix deps.get
           MIX_ENV=${{ env.MIX_ENV }} mix deps.compile
       - name: Save deps to cache
         id: save-deps-cache
-        if: steps.cached-deps.output.cache-hit != 'true'
+        if: steps.cached-deps.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
           path: |
@@ -49,9 +49,8 @@ jobs:
         run: MIX_ENV=${{ env.MIX_ENV }} mix compile
       - name: Save compiled application to cache
         id: cache-compiled-application
-        if: steps.cached-deps.output.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
           path: _build/${{ env.MIX_ENV }}/lib/elixir_lab
-          key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-mix-lock-${{ hashFiles('mix.lock') }}-application-code
+          key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-mix-lock-${{ hashFiles('mix.lock') }}-application-code-${{ github.sha }}
 
