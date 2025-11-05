@@ -43,7 +43,9 @@ jobs:
         id: cached-application
         uses: actions/cache/restore@v4
         with:
-          path: _build/${{ env.MIX_ENV }}/lib/elixir_lab
+          path: |
+            deps
+            _build
           key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-application-code-
       - name: Compile application
         id: compile-application
