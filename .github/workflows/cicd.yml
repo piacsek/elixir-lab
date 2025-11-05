@@ -117,13 +117,14 @@ jobs:
   deploy:
     name: Deployment
     runs-on: ubuntu-latest
-    # needs: 
+    environment: elixir-lab
+    # needs:
       # - compilation
       # - test
       # - static-analysis
     steps:
       - uses: actions/checkout@v4
-      - name: Push to Gigalixir!
+      - name: Push to Gigalixir
         run: |
           git remote add gigalixir https://$GIGALIXIR_USERNAME:$GIGALIXIR_API_KEY@git.gigalixir.com/elixir-lab.git
           git push gigalixir HEAD:refs/heads/main
