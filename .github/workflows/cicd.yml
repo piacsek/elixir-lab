@@ -118,10 +118,10 @@ jobs:
     name: Deployment
     runs-on: ubuntu-latest
     environment: elixir-lab
-    # needs:
-      # - compilation
-      # - test
-      # - static-analysis
+    needs:
+      - compilation
+      - test
+      - static-analysis
     steps:
       - uses: actions/checkout@v4
         with:
