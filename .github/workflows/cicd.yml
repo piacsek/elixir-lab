@@ -122,12 +122,14 @@ jobs:
       # - test
       # - static-analysis
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v2
-        with:
-          python-version: 3.8.1
-      - uses: mhanberg/gigalixir-action@0.6
-        with:
+      - name: Set up Gigalixir remote
+        run: |
+          git remote add gigalixir https://$GIGALIXIR_EMAIL:$GIGALIXIR_PASSWORD@git.gigalixir.com/$GIGALIXIR_APP.git
+
+      - name: Push to Gigalixir
+        run: |
+          git push gigalixir HEAD:refs/heads/main --force
+        env:
           GIGALIXIR_APP: elixir-lab
           GIGALIXIR_USERNAME: ${{ secrets.GIGALIXIR_USERNAME }}
           GIGALIXIR_PASSWORD: ${{ secrets.GIGALIXIR_PASSWORD }}
