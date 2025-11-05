@@ -124,9 +124,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up Gigalixir remote
-        run: |
-          git remote add gigalixir https://${{ secrets.GIGALIXIR_USERNAME }}:${{ secrets.GIGALIXIR_PASSWORD }}@git.gigalixir.com/elixir-lab.git
-
+        run: git remote add gigalixir https://git.gigalixir.com/elixir-lab.git/
       - name: Push to Gigalixir
         run: git push gigalixir
 
