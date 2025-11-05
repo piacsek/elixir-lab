@@ -46,7 +46,7 @@ jobs:
           key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-mix-lock-${{ hashFiles('mix.lock') }}-application-code
       - name: Compile application
         id: compile-application
-        run: MIX_ENV=${{ env.MIX_ENV }} mix compile
+        run: MIX_ENV=${{ env.MIX_ENV }} mix compile --warnings-as-errors
       - name: Save compiled application to cache
         id: cache-compiled-application
         uses: actions/cache/save@v4
