@@ -73,7 +73,7 @@ jobs:
           path: |
             deps/
             _build/
-          key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-mix-lock-${{ hashFiles('mix.lock') }}-application-code
+          key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-mix-lock-${{ hashFiles('mix.lock') }}-application-code-${{ github.sha }}
 
       - name: Mix test
         id: mix-test
