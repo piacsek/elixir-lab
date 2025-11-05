@@ -6,13 +6,11 @@ env:
   MIX_ENV: test
 
 jobs:
-  run_checks_and_deploly:
-    name: Run quality checks & Deploy
+  compilation:
+    name: Compilation
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - uses: erlef/setup-beam@v1
         id: setup-beam
         with:
@@ -60,6 +58,26 @@ jobs:
             deps
             _build
           key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-application-code-${{ github.sha }}
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    needs: 
+      - compilation
+    steps:
+      - uses: actions/checkout@v4
+      - uses: erlef/setup-beam@v1
+        id: setup-beam
+        with:
+          version-file: .tool-versions
+          version-type: strict
+      - name: Restore cached application
+        id: cached-application
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            deps
+            _build
+          key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-application-code-${{ github.sha }}
       - name: Run docker-compose services
         uses: hoverkraft-tech/compose-action@v2.4.1
         with:
@@ -70,12 +88,44 @@ jobs:
       - name: Mix test
         id: mix-test
         run: MIX_ENV=${{ env.MIX_ENV }} mix test
-      - name: Check formatted
-        id: check-formatted
+  static-analysis:
+    name: Static Analysis
+    runs-on: ubuntu-latest
+    needs: 
+      - compilation
+    steps:
+      - uses: actions/checkout@v4
+      - uses: erlef/setup-beam@v1
+        id: setup-beam
+        with:
+          version-file: .tool-versions
+          version-type: strict
+      - name: Restore cached application
+        id: cached-application
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            deps
+            _build
+          key: elixir-${{ steps.setup-beam.outputs.elixir-version }}-OTP-${{ steps.setup-beam.outputs.otp-version }}-application-code-${{ github.sha }}
+      - name: Formatting check
+        id: formatting-check
         run: MIX_ENV=${{ env.MIX_ENV }} mix format --check-formatted
-      - name: Mix credo
+      - name: Credo
         id: mix-credo
         run: MIX_ENV=${{ env.MIX_ENV }} mix credo
+  deploy:
+    name: Deployment
+    runs-on: ubuntu-latest
+    environment: elixir-lab
+    needs:
+      - compilation
+      - test
+      - static-analysis
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Push to Gigalixir
         run: |
           git remote add gigalixir https://$GIGALIXIR_USERNAME:$GIGALIXIR_API_KEY@git.gigalixir.com/elixir-lab.git
@@ -83,3 +133,6 @@ jobs:
         env: 
           GIGALIXIR_USERNAME: ${{ secrets.GIGALIXIR_USERNAME }}
           GIGALIXIR_API_KEY: ${{ secrets.GIGALIXIR_API_KEY }}
+
+
+
